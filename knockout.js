@@ -1,5 +1,6 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+var banner = document.getElementById("banner");
 var ballRadius = 25;
 var x ;
 var y ;
@@ -114,8 +115,10 @@ function draw() {
         }
         else {
             //alert("GAME OVER");
-            console.log("game over")
-            document.location.reload();
+            //console.log("game over")
+            //document.location.reload();
+            var message = "GAME OVER"
+            reloadGame(message);
 
         }
     }
@@ -141,8 +144,10 @@ function collisionDetection() {
                     b.status = 0;
                    score++;
                    if(score == brickRowCount*brickColumnCount) {
-                       alert("YOU WIN, CONGRATULATIONS!");
-                       document.location.reload();
+                      // alert("YOU WIN, CONGRATULATIONS!");
+                      // document.location.reload();
+                      var message = "YOU WIN, CONGRATULATIONS!"
+                      reloadGame(message);
                 }
             }
         }
@@ -179,4 +184,18 @@ y = canvas.height - 50
 })()
 
 
-setInterval(draw, 10);
+function startGame()
+{
+banner.style.display = 'none';
+setInt = setInterval(draw, 10);
+}
+
+function reloadGame(message)
+{
+    clearInterval(setInt);
+    banner.style.display = 'block';
+    x = canvas.width/2;
+    y = canvas.height - 50;
+    var banText = document.getElementById("banner-header");
+    banText.textContent = message;
+}
