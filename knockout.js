@@ -1,20 +1,20 @@
 var canvas = document.getElementById("myCanvas");
-canvas.style.width = window.innerWidth + "px"; canvas.style.height = window.innerHeight + "px";
 var ctx = canvas.getContext("2d");
-var ballRadius = 10;
-var x = canvas.width/2;
-var y = canvas.height-30;
+var ballRadius = 25;
+var x ;
+var y ;
+
 var dx = 2;
 var dy = -2;
-var paddleHeight = 10;
-var paddleWidth = 75;
+var paddleHeight = 20;
+var paddleWidth = 150;
 var paddleX = (canvas.width-paddleWidth)/2;
 var rightPressed = false;
 var leftPressed = false;
-var brickRowCount = 5;
+var brickRowCount = 10;
 var brickColumnCount = 14;
-var brickWidth = 75;
-var brickHeight = 20;
+var brickWidth = 100;
+var brickHeight = 25;
 var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
@@ -93,6 +93,7 @@ function roundedRect(ctx, x, y, width, height, radius) {
 }
 
 function draw() {
+   
     ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#CDDC39"
     ctx.fill()
@@ -150,9 +151,13 @@ function collisionDetection() {
 }
 function drawBricks() {
     for(c=0; c<brickColumnCount; c++) {
+        var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+        if((brickX + brickWidth +brickPadding + brickOffsetLeft) >= window.innerWidth)
+        {
+            break;
+        }
         for(r=0; r<brickRowCount; r++) {
             if(bricks[c][r].status == 1) {
-                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
                 var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
                 bricks[c][r].x = brickX;
                 bricks[c][r].y = brickY;
@@ -165,5 +170,13 @@ function drawBricks() {
         }
     }
 }
+
+(()=>{
+canvas.width = window.innerWidth - 10; 
+canvas.height = window.innerHeight - 10;
+x = canvas.width/2;
+y = canvas.height - 50
+})()
+
 
 setInterval(draw, 10);
