@@ -20,7 +20,7 @@ var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var score = 0;
-
+var ran = 0;
 
 
 var colorPallet = ['#A7FFEB','#64FFDA','#1DE9B6','#00BFA5']
@@ -107,7 +107,7 @@ function draw() {
         dy = -dy;
     }
     else if(y + dy > canvas.height-ballRadius) {
-        if(x > paddleX && x < paddleX + paddleWidth) {
+        if(x + ballRadius > paddleX && x + ballRadius < paddleX + paddleWidth) {
             dy = -dy;
         }
         else {
@@ -126,8 +126,13 @@ function draw() {
     else if(leftPressed && paddleX > 0) {
         paddleX -= 7;
     }
-    dx = (dx+score/100)
-    dy =  (dy+score/100)
+    if(dy<0)
+    {
+     dy =  -((Math.abs(dy))+(score/1000))
+    }
+    else
+    dy = dy + (score/1000)
+     
     x += dx;
     y += dy;
 
@@ -138,6 +143,8 @@ function collisionDetection() {
             var b = bricks[c][r];
             if(b.status == 1) {
                 if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+                   dx = (dx)+(score/100)
+                  
                     dy = -dy;
                     b.status = 0;
                    score++;
@@ -186,9 +193,15 @@ function startGame()
 {
 banner.style.display = 'none';
 x = canvas.width/2;
-y = canvas.height - 50;
+y = (canvas.height - 50);
 paddleX = (canvas.width-paddleWidth)/2;
-dx=2;
+ran = getRandomInt(5)
+if (ran %2 ==0)
+{
+    dx = -2
+}
+else
+  dx=2;
 dy=-2;
 rightPressed = false;
 leftPressed = false;
@@ -213,3 +226,7 @@ function reloadGame(message)
     banText.textContent = message;
     
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+   }
